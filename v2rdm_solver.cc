@@ -29,6 +29,7 @@
 #include<stdlib.h>
 #include<math.h>
 
+#include <psi4/libciomr/libciomr.h>
 #include <psi4/libmints/basisset.h>
 #include <psi4/libmints/factory.h>
 #include <psi4/libmints/writer.h>
@@ -207,16 +208,31 @@ void  v2RDMSolver::common_init(){
     nirrep_   = reference_wavefunction_->nirrep();
     nalphapi_ = reference_wavefunction_->nalphapi();
     nbetapi_  = reference_wavefunction_->nbetapi();
-    doccpi_   = reference_wavefunction_->doccpi();
-    soccpi_   = reference_wavefunction_->soccpi();
-    frzcpi_   = reference_wavefunction_->frzcpi();
-    frzvpi_   = reference_wavefunction_->frzvpi();
-    nmopi_    = reference_wavefunction_->nmopi();
+    //doccpi_   = reference_wavefunction_->doccpi();
+    //soccpi_   = reference_wavefunction_->soccpi();
+    //frzcpi_   = reference_wavefunction_->frzcpi();
+    //frzvpi_   = reference_wavefunction_->frzvpi();
+    //nmopi_    = reference_wavefunction_->nmopi();
+    doccpi_   = init_int_array(nirrep_);
+    soccpi_   = init_int_array(nirrep_);
+    frzcpi_   = init_int_array(nirrep_);
+    frzvpi_   = init_int_array(nirrep_);
+    nmopi_    = init_int_array(nirrep_);
     nso_      = reference_wavefunction_->nso();
     nmo_      = reference_wavefunction_->nmo();
-    nsopi_    = reference_wavefunction_->nsopi();
+    //nsopi_    = reference_wavefunction_->nsopi();
+    nsopi_    = init_int_array(nirrep_); //reference_wavefunction_->nsopi();
     molecule_ = reference_wavefunction_->molecule();
     enuc_     = molecule_->nuclear_repulsion_energy();
+
+    for (int h = 0; h < nirrep_; h++) {
+        frzcpi_[h] = reference_wavefunction_->frzcpi()[h];
+        frzvpi_[h] = reference_wavefunction_->frzvpi()[h];
+        nsopi_[h] = reference_wavefunction_->nsopi()[h];
+        nmopi_[h] = reference_wavefunction_->nmopi()[h];
+        doccpi_[h] = reference_wavefunction_->doccpi()[h];
+        soccpi_[h] = reference_wavefunction_->soccpi()[h];
+    }
 
     // need somewhere to store gradient, if required
     gradient_ =  reference_wavefunction_->matrix_factory()->create_shared_matrix("Total gradient", molecule_->natom(), 3);
