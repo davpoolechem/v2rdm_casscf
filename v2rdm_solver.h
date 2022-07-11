@@ -127,6 +127,11 @@ class v2RDMSolver: public Wavefunction{
     double nalpha_;
     double nbeta_;
 
+    /// Number of doubly occupied per irrep
+    Dimension doccpi_;
+    /// Number of singly occupied per irrep
+    Dimension soccpi_;
+    
     /// constrain Q2 to be positive semidefinite?
     bool constrain_q2_;
 
