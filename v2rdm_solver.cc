@@ -419,9 +419,9 @@ void  v2RDMSolver::common_init(){
     // Lagrangian matrix
     Lagrangian_ = SharedMatrix(reference_wavefunction_->lagrangian());
 
-    epsilon_a_= SharedVector(new Vector(nirrep_, nmopi_));
+    epsilon_a_= SharedVector(new Vector(nmopi_));
     epsilon_a_->copy(reference_wavefunction_->epsilon_a().get());
-    epsilon_b_= SharedVector(new Vector(nirrep_, nmopi_));
+    epsilon_b_= SharedVector(new Vector(nmopi_));
     epsilon_b_->copy(reference_wavefunction_->epsilon_b().get());
 
     amo_      = 0;
@@ -1691,15 +1691,15 @@ double v2RDMSolver::compute_energy() {
     if ( options_.get_bool("GUESS_ORBITALS_WRITE") ) {
 
         std::shared_ptr<MoldenWriter> molden(new MoldenWriter(reference_wavefunction_));
-        std::shared_ptr<Vector> zero (new Vector("",nirrep_,nmopi_));
+        std::shared_ptr<Vector> zero (new Vector("", nmopi_));
         zero->zero();
         std::string filename = get_writer_file_prefix(reference_wavefunction_->molecule()->name()) + ".guess.molden";
 
         Ca_ = SharedMatrix(reference_wavefunction_->Ca());
         Cb_ = SharedMatrix(reference_wavefunction_->Cb());
 
-        SharedVector occupation_a= SharedVector(new Vector(nirrep_, nmopi_));
-		SharedVector occupation_b= SharedVector(new Vector(nirrep_, nmopi_));
+        SharedVector occupation_a= SharedVector(new Vector(nmopi_));
+		SharedVector occupation_b= SharedVector(new Vector(nmopi_));
 
 		for (int h = 0; h < nirrep_; h++) {
 			for (int i = 0; i < nalphapi_[h]; i++) {
@@ -2230,7 +2230,7 @@ void v2RDMSolver::WriteMoldenFile() {
     // it is possible the 1-RDM is already in the NO basis:
     if ( options_.get_bool("NAT_ORBS") || options_.get_bool("FCIDUMP") || options_.get_bool("EXTENDED_KOOPMANS") ) {
 
-        std::shared_ptr<Vector> eigval (new Vector("Natural Orbital Occupation Numbers (spin free)",nirrep_,nmopi_));
+        std::shared_ptr<Vector> eigval (new Vector("Natural Orbital Occupation Numbers (spin free)", nmopi_));
         for (int h = 0; h < nirrep_; h++) {
             for (int i = 0; i < frzcpi_[h] + rstcpi_[h]; i++) {
                 eigval->pointer(h)[i] = 1.0;
@@ -2246,7 +2246,7 @@ void v2RDMSolver::WriteMoldenFile() {
         }
         //std::shared_ptr<MoldenWriter> molden(new MoldenWriter((std::shared_ptr<Wavefunction>)this));
         std::shared_ptr<MoldenWriter> molden(new MoldenWriter(reference_wavefunction_));
-        std::shared_ptr<Vector> zero (new Vector("",nirrep_,nmopi_));
+        std::shared_ptr<Vector> zero (new Vector("", nmopi_));
         zero->zero();
         std::string filename = get_writer_file_prefix(reference_wavefunction_->molecule()->name()) + ".molden";
         molden->write(filename,Ca_,Ca_,zero, zero,eigval,eigval,true);
@@ -2255,7 +2255,7 @@ void v2RDMSolver::WriteMoldenFile() {
     }else {
         std::shared_ptr<Matrix> D (new Matrix(nirrep_,nmopi_,nmopi_));
         std::shared_ptr<Matrix> eigvec (new Matrix(nirrep_,nmopi_,nmopi_));
-        std::shared_ptr<Vector> eigval (new Vector("Natural Orbital Occupation Numbers (spin free)",nirrep_,nmopi_));
+        std::shared_ptr<Vector> eigval (new Vector("Natural Orbital Occupation Numbers (spin free)", nmopi_));
         for (int h = 0; h < nirrep_; h++) {
             for (int i = 0; i < frzcpi_[h] + rstcpi_[h]; i++) {
                 D->pointer(h)[i][i] = 1.0;
@@ -2300,7 +2300,7 @@ void v2RDMSolver::WriteMoldenFile() {
         }
         //std::shared_ptr<MoldenWriter> molden(new MoldenWriter((std::shared_ptr<Wavefunction>)this));
         std::shared_ptr<MoldenWriter> molden(new MoldenWriter(reference_wavefunction_));
-        std::shared_ptr<Vector> zero (new Vector("",nirrep_,nmopi_));
+        std::shared_ptr<Vector> zero (new Vector("", nmopi_));
         zero->zero();
         std::string filename = get_writer_file_prefix(reference_wavefunction_->molecule()->name()) + ".molden";
         molden->write(filename,Cno,Cno,zero, zero,eigval,eigval,true);

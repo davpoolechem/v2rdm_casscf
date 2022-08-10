@@ -58,7 +58,7 @@ void v2RDMSolver::ComputeNaturalOrbitals() {
 
     SharedMatrix D (new Matrix(nirrep_,amopi_,amopi_));
     SharedMatrix eigvec (new Matrix(nirrep_,amopi_,amopi_));
-    SharedVector eigval (new Vector("Natural Orbital Occupation Numbers",nirrep_,amopi_));
+    SharedVector eigval (new Vector("Natural Orbital Occupation Numbers", amopi_));
 
     for (int h = 0; h < nirrep_; h++) {
         for (int i = 0; i < amopi_[h]; i++) {
@@ -564,7 +564,7 @@ void v2RDMSolver::PrintNaturalOrbitalOccupations() {
 
     SharedMatrix Da (new Matrix(nirrep_,nmopi_,nmopi_));
     SharedMatrix eigveca (new Matrix(nirrep_,nmopi_,nmopi_));
-    SharedVector eigvala (new Vector("Natural Orbital Occupation Numbers (alpha)",nirrep_,nmopi_));
+    SharedVector eigvala (new Vector("Natural Orbital Occupation Numbers (alpha)", mopi_));
 
     for (int h = 0; h < nirrep_; h++) {
         for (int i = 0; i < frzcpi_[h] + rstcpi_[h]; i++) {
@@ -582,7 +582,7 @@ void v2RDMSolver::PrintNaturalOrbitalOccupations() {
 
     SharedMatrix Db (new Matrix(nirrep_,nmopi_,nmopi_));
     SharedMatrix eigvecb (new Matrix(nirrep_,nmopi_,nmopi_));
-    SharedVector eigvalb (new Vector("Natural Orbital Occupation Numbers (beta)",nirrep_,nmopi_));
+    SharedVector eigvalb (new Vector("Natural Orbital Occupation Numbers (beta)", nmopi_));
     for (int h = 0; h < nirrep_; h++) {
         for (int i = 0; i < rstcpi_[h] + frzcpi_[h]; i++) {
             Db->pointer(h)[i][i] = 1.0;
