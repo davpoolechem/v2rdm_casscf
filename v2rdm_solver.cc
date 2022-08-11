@@ -418,9 +418,9 @@ void  v2RDMSolver::common_init(){
     Lagrangian_ = SharedMatrix(reference_wavefunction_->lagrangian());
 
     epsilon_a_= SharedVector(new Vector(nmopi_));
-    epsilon_a_->copy(reference_wavefunction_->epsilon_a().get());
+    epsilon_a_->copy(*reference_wavefunction_->epsilon_a());
     epsilon_b_= SharedVector(new Vector(nmopi_));
-    epsilon_b_->copy(reference_wavefunction_->epsilon_b().get());
+    epsilon_b_->copy(*reference_wavefunction_->epsilon_b());
 
     amo_      = 0;
     nfrzc_    = 0;
@@ -1780,16 +1780,16 @@ double v2RDMSolver::compute_energy() {
 
         // evaluate tau * mu * (b - Ax) for CG
         bpsdp_Au(Ax, x);
-        Ax->subtract(b);
+        Ax->subtract(*b);
         Ax->scale(-tau*mu);
 
         // evaluate A(c-z) ( but don't overwrite c! )
         z->scale(-1.0);
-        z->add(c);
+        z->add(*c);
         bpsdp_Au(B,z);
 
         // add tau*mu*(b-Ax) to A(c-z) and put result in B
-        B->add(Ax);
+        B->add(*Ax);
 
 
         // set convergence for CG problem (step 1 in table 1 of PRL 106 083001)
@@ -1825,13 +1825,13 @@ double v2RDMSolver::compute_energy() {
 
         // evaluate || A^T y - c + z||
         bpsdp_ATu(ATy, y);
-        ATy->add(z);
-        ATy->subtract(c);
+        ATy->add(*z);
+        ATy->subtract(*c);
         ed = ATy->norm();///sqrt(dimx_);
 
         // evaluate || Ax - b ||
         bpsdp_Au(Ax, x);
-        Ax->subtract(b);
+        Ax->subtract(*b);
         ep = Ax->norm();///sqrt(nconstraints_);
 
         // don't update mu every iteration
@@ -3211,9 +3211,9 @@ void v2RDMSolver::Update_xz() {
 
     // evaluate M(mu*x + ATy - c)
     bpsdp_ATu(ATy,y);
-    ATy->subtract(c);
+    ATy->subtract(*c);
     x->scale(mu);
-    ATy->add(x);
+    ATy->add(*x);
 
     // loop over each block of x/z
     for (int i = 0; i < dimensions_.size(); i++) {
@@ -3288,9 +3288,9 @@ void v2RDMSolver::Update_xz_nonsymmetric() {
 
     // evaluate M(mu*x + ATy - c)
     bpsdp_ATu(ATy,y);
-    ATy->subtract(c);
+    ATy->subtract(*c);
     x->scale(mu);
-    ATy->add(x);
+    ATy->add(*x);
 
     // loop over each block of x/z
     for (int i = 0; i < dimensions_.size(); i++) {
