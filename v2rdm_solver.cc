@@ -139,7 +139,6 @@ v2RDMSolver::~v2RDMSolver()
     free(d2_plus_core_sym_);
     free(d1_act_spatial_sym_);
 
-    free(amopi_);
     free(rstcpi_);
     free(rstvpi_);
     free(d2aboff);
@@ -257,8 +256,7 @@ void  v2RDMSolver::common_init(){
     memset((void*)rstvpi_,'\0',nirrep_*sizeof(int));
 
     // active orbitals per irrep:
-    amopi_    = (int*)malloc(nirrep_*sizeof(int));
-    memset((void*)amopi_,'\0',nirrep_*sizeof(int));
+    amopi_ = Dimension(nirrep_);
 
     // multiplicity:
     multiplicity_ = Process::environment.molecule()->multiplicity();
