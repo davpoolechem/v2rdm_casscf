@@ -564,7 +564,7 @@ void v2RDMSolver::PrintNaturalOrbitalOccupations() {
 
     SharedMatrix Da (new Matrix(nirrep_,nmopi_,nmopi_));
     SharedMatrix eigveca (new Matrix(nirrep_,nmopi_,nmopi_));
-    SharedVector eigvala (new Vector("Natural Orbital Occupation Numbers (alpha)", mopi_));
+    SharedVector eigvala (new Vector("Natural Orbital Occupation Numbers (alpha)", nmopi_));
 
     for (int h = 0; h < nirrep_; h++) {
         for (int i = 0; i < frzcpi_[h] + rstcpi_[h]; i++) {
